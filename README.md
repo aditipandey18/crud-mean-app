@@ -8,7 +8,7 @@ Nginx is configured as a reverse proxy to serve the application on port 80.
 ---
 
 ## Prerequisites
-- Ubuntu VM (AWS EC2 / Azure VM)
+- Ubuntu VM (AWS EC2)
 - Docker & Docker Compose installed
 - Jenkins installed and running
 - GitHub repository with application code
