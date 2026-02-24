@@ -1,0 +1,29 @@
+pipeline {
+    agent any
+    stages {
+        stage('Build Backend') {
+            steps {
+                sh 'docker build -t pandeyaditi/mean-backend ./backend'
+            }
+        }
+        stage('Build Frontend') {
+            steps {
+                sh 'docker build -t pandeyaditi/mean-frontend ./frontend'
+            }
+        }
+        stage('Push Images') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+                    sh 'echo $PASS | docker login -u $USER --password-stdin'
+                    sh 'docker push pandeyaditi/mean-backend'
+                    sh 'docker push pandeyaditi/mean-frontend'
+                }
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh 'docker-compose pull && docker-compose up -d'
+            }
+        }
+    }
+}
